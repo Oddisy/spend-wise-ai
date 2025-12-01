@@ -14,7 +14,7 @@ model User {
   imageUrl    String?
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
-clerkUserid String  @unique @map("clerUserid")
+  clerkUserid String   @unique
   Records     Record[]
 }
 
