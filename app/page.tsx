@@ -1,5 +1,5 @@
 import { checkUser } from "@/lib/checkuser";
-import GuestPage from "./about/page";
+import GuestPage from "./guest/page";
 import Dashboard from "./dashboard/page";
 
 export default async function  HomePage(){
