@@ -26,7 +26,7 @@ export default function Navbar() {
 
           {/* Desktop Links */}
           <div className="hidden md:flex items-center gap-2">
-            {['Home', 'About', 'Contact'].map((item) => (
+            {['Overview'].map((item) => (
               <Link
                 key={item}
                 href="/"
