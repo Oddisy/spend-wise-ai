@@ -28,9 +28,9 @@ const GuestPage = () => {
           className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold mb-6 leading-tight"
         >
           Track, Analyze & Optimize with{' '}
-          <span className="bg-gradient-to-r from-slate-800 via-slate-600 to-cyan-500 bg-clip-text text-transparent">
+          <div className="bg-gradient-to-r from-slate-800 via-slate-600 to-cyan-500 bg-clip-text text-transparent">
             SpendWise AI
-          </span>
+          </div>
         </motion.h1>
 
         <motion.p
