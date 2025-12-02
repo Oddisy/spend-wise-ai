@@ -1,7 +1,16 @@
-export default function HomePage(){
+import { checkUser } from "@/lib/checkuser";
+import GuestPage from "./about/page";
+import Dashboard from "./dashboard/page";
+
+export default async function  HomePage(){
+  const user = await checkUser()
+  if(!user){
+    return <GuestPage/>
+
+  }
   return (
     <div>
-      hello world
+      <Dashboard />
     </div>
 
   )
