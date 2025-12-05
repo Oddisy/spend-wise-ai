@@ -1,11 +1,10 @@
 'use client';
 import { useRef, useState } from 'react';
-import addExpenseRecord from '@/app/actions/addExpenseRecord';
-import { suggestCategory } from '@/app/actions/suggestCategory';
+import addExpenseRecord from '@/app/actions/addExpensesRecord';
 
 const AddRecord = () => {
   const formRef = useRef<HTMLFormElement>(null);
-  const [amount, setAmount] = useState(50); // Default value for expense amount
+  const [amount, setAmount] = useState(0); // Default value for expense amount
   const [alertMessage, setAlertMessage] = useState<string | null>(null); // State for alert message
   const [alertType, setAlertType] = useState<'success' | 'error' | null>(null); // State for alert type
   const [isLoading, setIsLoading] = useState(false); // State for loading spinner
@@ -17,10 +16,10 @@ const AddRecord = () => {
     setIsLoading(true); // Show spinner
     setAlertMessage(null); // Clear previous messages
 
-    formData.set('amount', amount.toString()); // Add the amount value to the form data
-    formData.set('category', category); // Add the selected category to the form data
+    formData.set('amount', amount.toString());
+    formData.set('category', category);
 
-    const { error } = await addExpenseRecord(formData); // Removed `data` since it's unused
+    const { error } = await addExpenseRecord(formData);
 
     if (error) {
       setAlertMessage(`Error: ${error}`);
@@ -29,7 +28,7 @@ const AddRecord = () => {
       setAlertMessage('Expense record added successfully!');
       setAlertType('success'); // Set alert type to success
       formRef.current?.reset();
-      setAmount(50); // Reset the amount to the default value
+      setAmount(0); // Reset the amount to the default value
       setCategory(''); // Reset the category
       setDescription(''); // Reset the description
     }
@@ -37,33 +36,43 @@ const AddRecord = () => {
     setIsLoading(false); // Hide spinner
   };
 
-  const handleAISuggestCategory = async () => {
-    if (!description.trim()) {
-      setAlertMessage('Please enter a description first');
-      setAlertType('error');
-      return;
-    }
+const handleAISuggestCategory = async () => {
+  if (!description.trim()) {
+    setAlertMessage('Please enter a description first');
+    setAlertType('error');
+    return;
+  }
 
-    setIsCategorizingAI(true);
-    setAlertMessage(null);
+  setIsCategorizingAI(true);
+  setAlertMessage(null);
 
-    try {
-      const result = await suggestCategory(description);
-      if (result.error) {
-        setAlertMessage(`AI Suggestion: ${result.error}`);
-        setAlertType('error');
-      } else {
-        setCategory(result.category);
-        setAlertMessage(`AI suggested category: ${result.category}`);
-        setAlertType('success');
-      }
-    } catch {
-      setAlertMessage('Failed to get AI category suggestion');
+  try {
+const res = await fetch('api/suggest-category',{
+    method: 'POST',
+    headers: {
+        'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({description}),
+})
+const data = await res.json();
+
+setCategory(data.category);
+    if (data.error) {
+      setAlertMessage(data.error);
       setAlertType('error');
-    } finally {
-      setIsCategorizingAI(false);
+    } else {
+      setCategory(data.category);
+      setAlertMessage(`AI suggested category: ${data.category}`);
+      setAlertType('success');
     }
-  };
+  } catch {
+    setAlertMessage('Failed to get AI suggestion');
+    setAlertType('error');
+  } finally {
+    setIsCategorizingAI(false);
+  }
+};
+
 
    return (
     <div className="bg-white/90 dark:bg-slate-900/90 backdrop-blur-sm p-4 sm:p-6 rounded-2xl
@@ -90,8 +99,8 @@ const AddRecord = () => {
         ref={formRef}
         onSubmit={(e) => {
           e.preventDefault();
-          const data = new FormData(formRef.current!);
-          handleSubmit(data);
+          const formData = new FormData(formRef.current!);
+            clientAction(formData);
         }}
         className="space-y-8"
       >
@@ -115,7 +124,7 @@ const AddRecord = () => {
                 name="text"
                 value={description}
                 onChange={(e) => setDescription(e.target.value)}
-                placeholder="Coffee, groceries, gas..."
+                placeholder="e.g., chicken from grocery store"
                 className="w-full pl-3 pr-12 py-2.5 bg-white/80 dark:bg-slate-800/70
                 border-2 border-slate-200/80 dark:border-slate-600/80 rounded-xl
                 focus:ring-2 focus:ring-cyan-500/30 focus:border-cyan-400
@@ -127,7 +136,7 @@ const AddRecord = () => {
               <button
                 type="button"
                 onClick={handleAISuggestCategory}
-                disabled={isCategorizingAI || !description.trim()}
+                // disabled={isCategorizingAI || !description.trim()}
                 className="absolute right-2 top-1/2 -translate-y-1/2
                 w-8 h-7 bg-gradient-to-r from-slate-700 to-cyan-500
                 hover:from-slate-800 hover:to-cyan-600
