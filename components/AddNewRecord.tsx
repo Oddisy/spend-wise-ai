@@ -16,7 +16,6 @@ const AddRecord = () => {
   const clientAction = async (formData: FormData) => {
     setIsLoading(true);
     setAlertMessage(null);
-
     formData.set('amount', amount.toString());
     formData.set('category', category);
 
@@ -96,6 +95,11 @@ const AddRecord = () => {
         onSubmit={(e) => {
           e.preventDefault();
           const formData = new FormData(formRef.current!);
+          const dateInput = formRef.current?.querySelector<HTMLInputElement>('input[name="date"]');
+if (dateInput?.value) {
+  formData.set('date', dateInput.value);
+}
+
           clientAction(formData);
         }}
         className="space-y-8"
