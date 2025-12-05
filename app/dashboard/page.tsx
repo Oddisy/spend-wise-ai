@@ -100,6 +100,11 @@ backdrop-blur-xl shadow-xl overflow-hidden">
               : "Today"}
           </span>
         </div>
+             <div className="flex justify-between text-slate-500 dark:text-slate-400 text-clip">
+          <span className="font-semibold text-slate-700 dark:text-slate-200 text-[10px]">
+          {user.emailAddresses[0]?.emailAddress}
+          </span>
+        </div>
 
       </div>
 

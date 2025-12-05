@@ -25,7 +25,7 @@ const AddRecord = () => {
       setAlertMessage(`Error: ${error}`);
       setAlertType('error');
     } else {
-      setAlertMessage('Expense record added successfully!');
+      setAlertMessage('you have added new expense successfully!');
       setAlertType('success');
       formRef.current?.reset();
       setAmount(0);
@@ -240,7 +240,7 @@ if (dateInput?.value) {
       {alertMessage && (
         <div className={`mt-4 p-3 rounded-xl border-l-4 ${
           alertType === "success"
-            ? "bg-cyan-50/70 border-cyan-500 text-cyan-700"
+            ? "bg-cyan-50/10 border-cyan-500 text-green-500"
             : "bg-red-50 border-red-500 text-red-700"
           }`}
         >
