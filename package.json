@@ -12,10 +12,12 @@
     "@clerk/nextjs": "^6.35.5",
     "@prisma/adapter-pg": "^7.0.1",
     "@prisma/client": "^7.0.1",
+    "chart.js": "^4.5.1",
     "framer-motion": "^12.23.25",
     "next": "16.0.5",
     "openai": "^6.9.1",
     "react": "19.2.0",
+    "react-chartjs-2": "^5.3.1",
     "react-dom": "19.2.0"
   },
   "devDependencies": {
