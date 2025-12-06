@@ -1,5 +1,5 @@
 'use client'
-import { ChartOptions, ChartData, ChartType } from 'chart.js';
+import { ChartOptions, ChartData } from 'chart.js';
 import { Line } from 'react-chartjs-2';
 import {
   Chart as ChartJS,
@@ -30,20 +30,25 @@ interface Record {
 }
 
 const LineChart = ({ records }: { records: Record[] }) => {
+  // Sort records by date ascending
+  const sortedRecords = [...records].sort(
+    (a, b) => new Date(a.date).getTime() - new Date(b.date).getTime()
+  );
+
   const data: ChartData<'line'> = {
-    labels: records.map((record) =>
+    labels: sortedRecords.map((record) =>
       new Date(record.date).toLocaleDateString()
     ),
     datasets: [
       {
-        data: records.map((r) => r.amount),
+        data: sortedRecords.map((r) => r.amount),
         borderColor: '#14b8a6',
         backgroundColor: 'rgba(20, 184, 166, 0.2)',
         tension: 0.4,
         pointRadius: 5,
         pointHoverRadius: 7,
-        pointBackgroundColor: records.map((r) =>
-          r.amount < 7 ? '#ef4444' : '#14b8a6'
+        pointBackgroundColor: sortedRecords.map((r) =>
+          r.amount > 7 ? '#ef4444' : '#14b8a6'
         ),
         fill: true,
       },
@@ -61,7 +66,7 @@ const LineChart = ({ records }: { records: Record[] }) => {
         title: {
           display: true,
           text: 'Date',
-          font: { size: 14, weight: 'bold' } as any, // <--- cast to any
+          font: { size: 14, weight: 'bold' } as any,
           color: '#334155',
         },
         ticks: { color: '#64748b' },
@@ -71,7 +76,7 @@ const LineChart = ({ records }: { records: Record[] }) => {
         title: {
           display: true,
           text: 'Amount Spent($)',
-          font: { size: 16, weight: 'bold' } as any, // <--- cast to any
+          font: { size: 16, weight: 'bold' } as any,
           color: '#334155',
         },
         ticks: { color: '#64748b' },
