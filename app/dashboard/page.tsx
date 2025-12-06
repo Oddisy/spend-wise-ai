@@ -1,6 +1,6 @@
 import AddNewRecord from '@/components/AddNewRecord';
 import AIInsights from '@/components/AIInsights';
-import ExpensesCharts from '@/components/ExpensesChart';
+import ExpensesCharts from '@/components/ExpenseStats';
 import Guest from '@/app/guest/page';
 import RecordChart from '@/components/RecordChart';
 import RecordHistory from '@/components/RecordHistory';
