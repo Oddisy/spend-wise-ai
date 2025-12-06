@@ -175,10 +175,13 @@ if (dateInput?.value) {
 
           {/* Category */}
           <div className="space-y-1.5">
+            <div className="">
             <label className="flex items-center gap-2 text-xs font-semibold text-slate-700 dark:text-slate-300">
               <span className="w-1.5 h-1.5 bg-cyan-500 rounded-full" />
               Category
             </label>
+            <span className='text-[12px] font-semibold text-yellow-700'>use the button above for AI suggestion</span>
+            </div>
 
             <select
               name="category"
@@ -199,7 +202,7 @@ if (dateInput?.value) {
           </div>
 
           {/* Amount */}
-          <div className="space-y-1.5">
+          <div className="space-y-7">
             <label className="flex items-center gap-2 text-xs font-semibold text-slate-700 dark:text-slate-300">
               <span className="w-1.5 h-1.5 bg-cyan-500 rounded-full" />
               Amount
