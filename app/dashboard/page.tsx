@@ -1,5 +1,5 @@
 import AddNewRecord from '@/components/AddNewRecord';
-import AIInsights from '@/components/AIInsights';
+import AIInsights from '@/components/AllAiInsights';
 import ExpensesCharts from '@/components/ExpenseStats';
 import Guest from '@/app/guest/page';
 import RecordChart from '@/components/RecordChart';
