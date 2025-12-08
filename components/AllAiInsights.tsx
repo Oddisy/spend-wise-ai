@@ -50,7 +50,7 @@ const typeEmoji = (type: string) => {
   }
 };
 
-export default function AIInsights() {
+export default function AIAiInsights() {
   const [insights, setInsights] = useState<InsightData[]>([]);
   const [expanded, setExpanded] = useState<string | null>(null);
   const [answers, setAnswers] = useState<Record<string, AnswerState>>({});
