@@ -2,7 +2,7 @@
 import { useRef, useState } from 'react';
 import addExpenseRecord from '@/app/actions/addExpensesRecord';
 
-const AddRecord = () => {
+const AddNewRecord = () => {
   const formRef = useRef<HTMLFormElement>(null);
 
   const [amount, setAmount] = useState(0);
@@ -255,4 +255,4 @@ if (dateInput?.value) {
   );
 };
 
-export default AddRecord;
+export default AddNewRecord;
