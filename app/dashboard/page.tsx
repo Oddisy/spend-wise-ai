@@ -1,6 +1,6 @@
 import AddNewRecord from '@/components/AddNewRecord';
-import AIInsights from '@/components/AllAiInsights';
-import ExpensesCharts from '@/components/ExpenseStats';
+import AllAiInsights from '@/components/AllAiInsights';
+import ExpenseStats from '@/components/ExpenseStats';
 import Guest from '@/app/guest/page';
 import RecordChart from '@/components/RecordChart';
 import RecordHistory from '@/components/RecordHistory';
@@ -122,13 +122,13 @@ backdrop-blur-xl shadow-xl overflow-hidden">
           <div className='space-y-4 sm:space-y-6'>
             {/* Expense Analytics */}
             <RecordChart />
-            <ExpensesCharts />
+            <ExpenseStats />
           </div>
         </div>
 
         {/* Full-width sections below - mobile-friendly spacing */}
         <div className='mt-6 sm:mt-8 space-y-4 sm:space-y-6'>
-          <AIInsights />
+          <AllAiInsights />
           <RecordHistory />
         </div>
       </div>
