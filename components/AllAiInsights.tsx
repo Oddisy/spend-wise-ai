@@ -14,24 +14,56 @@ interface InsightData {
 
 type AnswerState = {
   loading: boolean;
+  typing: boolean;
   text: string;
+};
+
+const typeWriter = (
+  text: string,
+  onUpdate: (value: string) => void,
+  speed = 18
+) => {
+  let index = 0;
+  const write = () => {
+    if (index <= text.length) {
+      onUpdate(text.slice(0, index));
+      index++;
+      setTimeout(write, speed);
+    }
+  };
+  write();
 };
 
 export default function AIInsights() {
   const [insights, setInsights] = useState<InsightData[]>([]);
   const [expanded, setExpanded] = useState<string | null>(null);
   const [answers, setAnswers] = useState<Record<string, AnswerState>>({});
+  const [messages, setMessages] = useState<Record<string, string>>({});
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    loadInsights();
+    if (typeof window !== 'undefined') {
+      loadInsights();
+    }
   }, []);
 
   const loadInsights = async () => {
     setLoading(true);
     try {
       const data = await getAIInsights();
+      if (!data || data.length === 0) return;
+
       setInsights(data);
+
+      setTimeout(() => {
+        data.forEach((insight) => {
+          typeWriter(insight.message, (text) => {
+            setMessages((prev) => ({ ...prev, [insight.id]: text }));
+          }, 20);
+        });
+      }, 0);
+    } catch (err) {
+      console.error('Failed to load insights:', err);
     } finally {
       setLoading(false);
     }
@@ -39,19 +71,14 @@ export default function AIInsights() {
 
   const toggleInsight = async (insight: InsightData) => {
     if (!insight.action) return;
-
-    if (expanded === insight.id) {
-      setExpanded(null);
-      return;
-    }
-
+    if (expanded === insight.id) return setExpanded(null);
     setExpanded(insight.id);
 
     if (answers[insight.id]) return;
 
-    setAnswers(prev => ({
+    setAnswers((prev) => ({
       ...prev,
-      [insight.id]: { loading: true, text: '' },
+      [insight.id]: { loading: true, typing: false, text: '' },
     }));
 
     try {
@@ -59,15 +86,27 @@ export default function AIInsights() {
         `${insight.title}: ${insight.action}`
       );
 
-      setAnswers(prev => ({
+      setAnswers((prev) => ({
         ...prev,
-        [insight.id]: { loading: false, text: res },
+        [insight.id]: { loading: false, typing: true, text: '' },
       }));
+
+      typeWriter(res, (value) => {
+        setAnswers((prev) => ({
+          ...prev,
+          [insight.id]: {
+            loading: false,
+            typing: value.length < res.length,
+            text: value,
+          },
+        }));
+      });
     } catch {
-      setAnswers(prev => ({
+      setAnswers((prev) => ({
         ...prev,
         [insight.id]: {
           loading: false,
+          typing: false,
           text: 'Unable to generate insight.',
         },
       }));
@@ -86,114 +125,139 @@ export default function AIInsights() {
     }
   };
 
-  /* ---------- LOADING STATE ---------- */
-  if (loading) {
-    return (
-      <div className="rounded-2xl p-6 bg-white/95 dark:bg-slate-900/95 border border-slate-200 dark:border-slate-700 shadow-lg">
-        <div className="h-6 w-40 bg-slate-200 dark:bg-slate-700 animate-pulse rounded mb-6" />
-        <div className="space-y-3">
-          {[1, 2, 3].map(i => (
-            <div
-              key={i}
-              className="h-16 rounded-xl bg-slate-100 dark:bg-slate-800 animate-pulse"
-            />
-          ))}
+  // Skeleton loader items
+  const renderSkeleton = (count: number) => {
+    return Array.from({ length: count }).map((_, idx) => (
+      <div key={idx} className="relative pl-6 animate-pulse">
+        <span className="absolute left-0 top-6 w-2 h-2 bg-slate-300 rounded-full" />
+        <span className="absolute left-[3px] top-8 bottom-0 w-px bg-slate-200" />
+        <div className="rounded-xl border-l-4 border-slate-300 p-4 bg-slate-100 dark:bg-slate-800/50">
+          <div className="h-4 w-3/4 bg-slate-300 rounded mb-2" />
+          <div className="h-3 w-1/2 bg-slate-300 rounded" />
         </div>
       </div>
-    );
-  }
+    ));
+  };
 
   return (
-    <section className="rounded-2xl bg-white/95 dark:bg-slate-900/95 border border-slate-200/50 dark:border-slate-700/50 backdrop-blur-xl shadow-lg p-6">
+    <section className="rounded-2xl bg-white/95 dark:bg-slate-900/95 border border-slate-200/50 dark:border-slate-700/50 backdrop-blur-xl p-6 shadow-lg">
       {/* HEADER */}
-      <div className="flex items-center justify-between mb-6">
+      <div className="flex justify-between items-center mb-6">
         <div className="flex items-center gap-3">
-          <div className="w-10 h-10 rounded-xl bg-linear-to-br from-slate-800 via-slate-700 to-cyan-500 flex items-center justify-center text-white shadow">
+          <div className="w-10 h-10 rounded-xl bg-linear-to-br from-slate-800 via-slate-700 to-cyan-500 text-white flex items-center justify-center shadow">
             🤖
           </div>
           <div>
             <h3 className="font-bold text-slate-900 dark:text-slate-100">
-              AI Insights
+              AI Insight Timeline
             </h3>
             <p className="text-xs text-slate-500">
-              Insight timeline & activity
+              Real-time financial intelligence
             </p>
           </div>
         </div>
 
-        <button
-          onClick={loadInsights}
-          className="px-3 py-1.5 text-xs rounded-lg bg-linear-to-r from-slate-800 via-slate-700 to-cyan-500 text-white shadow"
-        >
-          Refresh
-        </button>
+<button
+  onClick={loadInsights}
+  disabled={loading} // disable while loading
+  className={`px-3 py-1.5 text-xs rounded-lg bg-linear-to-r from-slate-800 via-slate-700 to-cyan-500 text-white shadow flex items-center gap-2 ${
+    loading ? 'opacity-70 cursor-not-allowed' : ''
+  }`}
+>
+  {loading && (
+    <svg
+      className="animate-spin h-4 w-4 text-white"
+      xmlns="http://www.w3.org/2000/svg"
+      fill="none"
+      viewBox="0 0 24 24"
+    >
+      <circle
+        className="opacity-25"
+        cx="12"
+        cy="12"
+        r="10"
+        stroke="currentColor"
+        strokeWidth="4"
+      ></circle>
+      <path
+        className="opacity-75"
+        fill="currentColor"
+        d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"
+      ></path>
+    </svg>
+  )}
+  Refresh
+</button>
+
       </div>
 
       {/* TIMELINE */}
       <div className="space-y-3">
-        {insights.map((insight, index) => {
-          const isOpen = expanded === insight.id;
-          const answer = answers[insight.id];
+        {loading
+          ? renderSkeleton(5) // Show 5 skeleton items while loading
+          : insights.map((insight, index) => {
+              const isOpen = expanded === insight.id;
+              const answer = answers[insight.id];
+              const message = messages[insight.id] || '';
 
-          return (
-            <div
-              key={insight.id}
-              className="relative pl-6"
-            >
-              {/* Timeline dot */}
-              <span className="absolute left-0 top-6 w-2 h-2 bg-cyan-500 rounded-full" />
-              {index !== insights.length - 1 && (
-                <span className="absolute left-[3px] top-8 bottom-0 w-px bg-slate-200 dark:bg-slate-700" />
-              )}
+              return (
+                <div key={insight.id} className="relative pl-6">
+                  <span className="absolute left-0 top-6 w-2 h-2 bg-cyan-500 rounded-full" />
+                  {index !== insights.length - 1 && (
+                    <span className="absolute left-[3px] top-8 bottom-0 w-px bg-slate-400 dark:bg-slate-700" />
+                  )}
 
-              <div
-                className={`rounded-xl p-4 border-l-4 cursor-pointer transition hover:bg-slate-50 dark:hover:bg-slate-800/60 ${colorMap(
-                  insight.type
-                )}`}
-                onClick={() => toggleInsight(insight)}
-              >
-                <div className="flex justify-between gap-4">
-                  <div>
-                    <h4 className="text-sm font-semibold text-slate-900 dark:text-slate-100">
-                      {insight.title}
-                    </h4>
-                    <p className="text-xs text-slate-500 mt-1">
-                      {insight.message}
-                    </p>
-                  </div>
+                  <div
+                    onClick={() => toggleInsight(insight)}
+                    className={`rounded-xl border-l-4 p-4 cursor-pointer transition hover:bg-slate-50 dark:hover:bg-slate-800/60 ${colorMap(
+                      insight.type
+                    )}`}
+                  >
+                    <div className="flex justify-between gap-4">
+                      <div>
+                        <h4 className="text-sm font-semibold text-slate-900 dark:text-slate-100">
+                          {insight.title}
+                        </h4>
 
-                  <span className="text-xs text-cyan-600 self-start">
-                    {isOpen ? 'Hide' : 'View'}
-                  </span>
-                </div>
+                        <p className="text-xs text-slate-500 mt-1 whitespace-pre-line">
+                          {message}
+                          <span className="inline-block w-1 ml-1 bg-cyan-500 animate-pulse rounded-sm" />
+                        </p>
+                      </div>
+                      <span className="text-xs text-cyan-600">
+                        {isOpen ? 'Hide' : 'View'}
+                      </span>
+                    </div>
 
-                {/* EXPANDED AI ANSWER */}
-                {isOpen && (
-                  <div className="mt-4 rounded-xl bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 p-4">
-                    {answer?.loading && (
-                      <div className="space-y-2">
-                        <div className="h-2 bg-slate-200 dark:bg-slate-700 animate-pulse rounded" />
-                        <div className="h-2 w-3/4 bg-slate-200 dark:bg-slate-700 animate-pulse rounded" />
+                    {isOpen && (
+                      <div className="mt-4 p-4 rounded-xl bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700">
+                        {answer?.loading && (
+                          <div className="flex items-center gap-2 text-sm text-slate-500">
+                            <span className="animate-pulse">AI is thinking</span>
+                            <span className="inline-block w-[2px] h-4 bg-white animate-ping rounded-sm" />
+                          </div>
+                        )}
+
+                        {answer?.text && (
+                          <p className="text-sm text-slate-700 dark:text-slate-300 whitespace-pre-line">
+                            {answer.text}
+                            {answer.typing && (
+                              <span className="inline-block w-1 ml-1 bg-cyan-500 animate-pulse rounded-sm" />
+                            )}
+                          </p>
+                        )}
+
+                        {!answer && (
+                          <p className="text-xs text-slate-400">
+                            Click to generate AI explanation.
+                          </p>
+                        )}
                       </div>
                     )}
-
-                    {!answer?.loading && answer?.text && (
-                      <p className="text-sm text-slate-700 dark:text-slate-300">
-                        {answer.text}
-                      </p>
-                    )}
-
-                    {!answer && (
-                      <p className="text-xs text-slate-400">
-                        Click again to generate AI response.
-                      </p>
-                    )}
                   </div>
-                )}
-              </div>
-            </div>
-          );
-        })}
+                </div>
+              );
+            })}
       </div>
     </section>
   );
