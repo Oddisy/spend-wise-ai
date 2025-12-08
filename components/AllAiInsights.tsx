@@ -34,6 +34,22 @@ const typeWriter = (
   write();
 };
 
+// Map insight type to emoji
+const typeEmoji = (type: string) => {
+  switch (type) {
+    case 'warning':
+      return '⚠️';
+    case 'success':
+      return '✅';
+    case 'tip':
+      return '💡';
+    case 'info':
+      return 'ℹ️';
+    default:
+      return '💭';
+  }
+};
+
 export default function AIInsights() {
   const [insights, setInsights] = useState<InsightData[]>([]);
   const [expanded, setExpanded] = useState<string | null>(null);
@@ -107,7 +123,7 @@ export default function AIInsights() {
         [insight.id]: {
           loading: false,
           typing: false,
-          text: 'Unable to generate insight.',
+          text: 'Unable to generate insight. Please check your internet connection and try again.',
         },
       }));
     }
@@ -125,12 +141,11 @@ export default function AIInsights() {
     }
   };
 
-  // Skeleton loader items
   const renderSkeleton = (count: number) => {
     return Array.from({ length: count }).map((_, idx) => (
       <div key={idx} className="relative pl-6 animate-pulse">
-        <span className="absolute left-0 top-6 w-2 h-2 bg-slate-300 rounded-full" />
-        <span className="absolute left-[3px] top-8 bottom-0 w-px bg-slate-200" />
+        <span className="absolute left-0 top-6 w-6 h-6 text-center text-xs rounded-full bg-slate-300 flex items-center justify-center" />
+        <span className="absolute left-[11px] top-8 bottom-0 w-px bg-slate-200" />
         <div className="rounded-xl border-l-4 border-slate-300 p-4 bg-slate-100 dark:bg-slate-800/50">
           <div className="h-4 w-3/4 bg-slate-300 rounded mb-2" />
           <div className="h-3 w-1/2 bg-slate-300 rounded" />
@@ -148,8 +163,8 @@ export default function AIInsights() {
             🤖
           </div>
           <div>
-            <h3 className="font-bold text-slate-900 dark:text-slate-100">
-              AI Insight Timeline
+            <h3 className="font-bold text-slate-900 dark:text-slate-100 flex items-center gap-2">
+              🤖 AI Insight Timeline
             </h3>
             <p className="text-xs text-slate-500">
               Real-time financial intelligence
@@ -157,54 +172,57 @@ export default function AIInsights() {
           </div>
         </div>
 
-<button
-  onClick={loadInsights}
-  disabled={loading} // disable while loading
-  className={`px-3 py-1.5 text-xs rounded-lg bg-linear-to-r from-slate-800 via-slate-700 to-cyan-500 text-white shadow flex items-center gap-2 ${
-    loading ? 'opacity-70 cursor-not-allowed' : ''
-  }`}
->
-  {loading && (
-    <svg
-      className="animate-spin h-4 w-4 text-white"
-      xmlns="http://www.w3.org/2000/svg"
-      fill="none"
-      viewBox="0 0 24 24"
-    >
-      <circle
-        className="opacity-25"
-        cx="12"
-        cy="12"
-        r="10"
-        stroke="currentColor"
-        strokeWidth="4"
-      ></circle>
-      <path
-        className="opacity-75"
-        fill="currentColor"
-        d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"
-      ></path>
-    </svg>
-  )}
-  Refresh
-</button>
-
+        <button
+          onClick={loadInsights}
+          disabled={loading}
+          className={`px-3 py-1.5 text-xs rounded-lg bg-linear-to-r from-slate-800 via-slate-700 to-cyan-500 text-white shadow flex items-center gap-2 ${
+            loading ? 'opacity-70 cursor-not-allowed' : ''
+          }`}
+        >
+          {loading && (
+            <svg
+              className="animate-spin h-4 w-4 text-white"
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+            >
+              <circle
+                className="opacity-25"
+                cx="12"
+                cy="12"
+                r="10"
+                stroke="currentColor"
+                strokeWidth="4"
+              ></circle>
+              <path
+                className="opacity-75"
+                fill="currentColor"
+                d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"
+              ></path>
+            </svg>
+          )}
+          Refresh
+        </button>
       </div>
 
       {/* TIMELINE */}
       <div className="space-y-3">
         {loading
-          ? renderSkeleton(5) // Show 5 skeleton items while loading
+          ? renderSkeleton(5)
           : insights.map((insight, index) => {
               const isOpen = expanded === insight.id;
               const answer = answers[insight.id];
               const message = messages[insight.id] || '';
+              const emoji = typeEmoji(insight.type);
 
               return (
-                <div key={insight.id} className="relative pl-6">
-                  <span className="absolute left-0 top-6 w-2 h-2 bg-cyan-500 rounded-full" />
+                <div key={insight.id} className="relative pl-10">
+                  {/* timeline emoji dot */}
+                  <span className="absolute left-0 top-4 w-8 h-8 flex items-center justify-center text-xl">
+                    {emoji}
+                  </span>
                   {index !== insights.length - 1 && (
-                    <span className="absolute left-[3px] top-8 bottom-0 w-px bg-slate-400 dark:bg-slate-700" />
+                    <span className="absolute left-3 top-10 bottom-0 w-px bg-slate-200 dark:bg-slate-700" />
                   )}
 
                   <div
@@ -216,9 +234,8 @@ export default function AIInsights() {
                     <div className="flex justify-between gap-4">
                       <div>
                         <h4 className="text-sm font-semibold text-slate-900 dark:text-slate-100">
-                          {insight.title}
+                          {emoji} {insight.title}
                         </h4>
-
                         <p className="text-xs text-slate-500 mt-1 whitespace-pre-line">
                           {message}
                           <span className="inline-block w-1 ml-1 bg-cyan-500 animate-pulse rounded-sm" />

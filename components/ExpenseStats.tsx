@@ -10,6 +10,9 @@ const ExpenseStats = async () => {
 
     const { record, daysWithRecords } = userRecordResult;
     const { highestExpense, lowestExpense } = rangeResult;
+    const safeHighestExpense = highestExpense ?? 0;
+const safeLowestExpense = lowestExpense ?? 0;
+
     console.log('record:', record, 'daysWithRecords:', daysWithRecords);
     console.log('highestExpense:', highestExpense, 'lowestExpense:', lowestExpense);
 
@@ -77,7 +80,7 @@ const ExpenseStats = async () => {
             <div className="h-2 bg-slate-200 dark:bg-slate-700 rounded-full overflow-hidden">
               <div
                 className="h-full bg-red-500 dark:bg-red-400 transition-all"
-                style={{ width: `${Math.min(highestExpense / 1000, 100)}%` }}
+                style={{ width: `${Math.min(safeHighestExpense / 1000, 100)}%` }}
               ></div>
             </div>
           </div>
@@ -100,7 +103,7 @@ const ExpenseStats = async () => {
             <div className="h-2 bg-slate-200 dark:bg-slate-700 rounded-full overflow-hidden">
               <div
                 className="h-full bg-cyan-500 dark:bg-cyan-400 transition-all"
-                style={{ width: `${Math.min(lowestExpense / 1000, 100)}%` }}
+                style={{ width: `${Math.min(safeLowestExpense / 1000, 100)}%` }}
               ></div>
             </div>
           </div>
