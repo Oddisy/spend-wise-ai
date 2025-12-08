@@ -123,7 +123,7 @@ export default function AIInsights() {
         [insight.id]: {
           loading: false,
           typing: false,
-          text: 'Unable to generate insight.',
+          text: 'Unable to generate insight. Please check your internet connection and try again.',
         },
       }));
     }
