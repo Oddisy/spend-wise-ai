@@ -1,6 +1,6 @@
 import AddNewRecord from '@/components/AddNewRecord';
-import AIInsights from '@/components/AIInsights';
-import ExpensesCharts from '@/components/ExpensesChart';
+import AIInsights from '@/components/AllAiInsights';
+import ExpensesCharts from '@/components/ExpenseStats';
 import Guest from '@/app/guest/page';
 import RecordChart from '@/components/RecordChart';
 import RecordHistory from '@/components/RecordHistory';
@@ -27,10 +27,10 @@ backdrop-blur-xl shadow-xl overflow-hidden">
   {/* Top Accent Line */}
   <div className="h-1 bg-linear-to-r from-slate-800 via-slate-600 to-cyan-500" />
 
-  <div className="p-6 sm:p-8 flex flex-row-reverse max-sm:flex-col gap-6">
+  <div className="p-6 sm:p-8 flex max-sm:flex-col-reverse flex-row-reverse  gap-6">
 
     {/* LEFT PANEL */}
-    <div className=" w-[60%] lg:col-span-2 space-y-4">
+    <div className=" sm:w-[60%] lg:col-span-2 space-y-4">
 
       {/* Status */}
       <span className="inline-flex items-center gap-2
@@ -41,7 +41,7 @@ backdrop-blur-xl shadow-xl overflow-hidden">
 
       {/* Title */}
       <h2 className="text-2xl sm:text-3xl font-bold text-slate-900 dark:text-white">
-        Welcome back, {user.firstName}
+        Welcome back, {user.lastName}
       </h2>
 
       {/* Info */}
@@ -60,7 +60,7 @@ backdrop-blur-xl shadow-xl overflow-hidden">
     </div>
 
     {/* RIGHT PANEL */}
-    <div className="w-[40%] bg-slate-50 dark:bg-slate-800/60
+    <div className="w-[80%] sm:w-[40%] bg-slate-50 dark:bg-slate-800/60
     border border-slate-200 dark:border-slate-700 rounded-2xl p-5
     flex flex-col items-center justify-center text-center space-y-4">
 
@@ -98,6 +98,11 @@ backdrop-blur-xl shadow-xl overflow-hidden">
             {user.lastActiveAt
               ? new Date(user.lastActiveAt).toLocaleDateString()
               : "Today"}
+          </span>
+        </div>
+             <div className="flex justify-between text-slate-500 dark:text-slate-400 text-clip">
+          <span className="font-semibold text-slate-700 dark:text-slate-200 text-[10px]">
+          {user.emailAddresses[0]?.emailAddress}
           </span>
         </div>
 

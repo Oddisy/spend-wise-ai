@@ -1,7 +1,7 @@
 'use server';
-import { auth } from '@clerk/nextjs/server';
 import { db } from '@/lib/db';
 import { revalidatePath } from 'next/cache';
+import { checkUser } from '@/lib/checkuser';
 
 interface RecordData {
   text: string;
@@ -51,13 +51,9 @@ async function addExpenseRecord(formData: FormData): Promise<RecordResult> {
     console.error('Invalid date format:', error); // Log the error
     return { error: 'Invalid date format' };
   }
-
-  // Get logged in user
-  const { userId } = await auth();
-
-  // Check for user
-  if (!userId) {
-    return { error: 'User not found' };
+  const user = await checkUser();
+  if (!user) {
+    throw new Error("User not authenticated");
   }
 
   try {
@@ -68,7 +64,7 @@ async function addExpenseRecord(formData: FormData): Promise<RecordResult> {
         amount,
         category,
         date, // Save the date to the database
-        userId,
+       userId: user.clerkUserid,
       },
     });
 
@@ -77,6 +73,7 @@ async function addExpenseRecord(formData: FormData): Promise<RecordResult> {
       amount: createdRecord.amount,
       category: createdRecord.category,
       date: createdRecord.date?.toISOString() || date,
+
     };
 
     revalidatePath('/');
