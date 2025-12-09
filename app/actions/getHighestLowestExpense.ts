@@ -2,16 +2,21 @@
 import { checkUser } from '@/lib/checkuser';
 import { db } from '@/lib/db';
 
-async function getHighestLowestExpense(): Promise<{
-  highestExpense?: number;
-  lowestExpense?: number;
+type ExpenseStatsResponse = {
+  highestExpense: number;
+  lowestExpense: number;
   error?: string;
-}> {
-  const  user  = await checkUser();
-  const userId = user?.clerkUserid;
+};
 
+async function getHighestLowestExpense(): Promise<ExpenseStatsResponse> {
+  const user = await checkUser();
+const userId = user?.clerkUserid;
   if (!user) {
-    return { error: 'User not found' };
+    return {
+      highestExpense: 0,
+      lowestExpense: 0,
+      error: 'User not found',
+    };
   }
 
   try {
@@ -35,7 +40,9 @@ async function getHighestLowestExpense(): Promise<{
     return { highestExpense, lowestExpense };
   } catch (error) {
     console.error('Error fetching expense amounts:', error); // Log the error
-    return { error: 'Database error' };
+    return {   highestExpense: 0,
+      lowestExpense: 0,
+      error: 'User not found', };
   }
 }
 
