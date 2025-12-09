@@ -4,37 +4,22 @@ import { db } from '@/lib/db';
 import { generateExpenseInsights, AIInsight, ExpenseRecord } from '@/lib/ai';
 
 export async function getAIInsights(): Promise<AIInsight[]> {
- try {
-  const user = await checkUser();
+  try {
+    const user = await checkUser();
+    const userId = user?.clerkUserid;
 
-  if (!user) {
-    return [
-      {
-        id: 'auth-1',
-        type: 'warning',
-        title: 'Sign in required',
-        message: 'Please sign in to view your insights.',
-        action: 'Sign in',
-        confidence: 0.2,
-      },
-    ];
-  }
-
-} catch (error) {
-  console.error('Error checking user authentication:', error);
-
-  return [
-    {
-      id: 'auth-error',
-      type: 'warning',
-      title: 'Authentication issue',
-      message: 'We could not verify your session. Please try again.',
-      action: 'Retry',
-      confidence: 0.3,
-    },
-  ];
-}
-
+    if (!user) {
+      return [
+        {
+          id: 'auth-1',
+          type: 'warning',
+          title: 'Sign in required',
+          message: 'Please sign in to view your insights.',
+          action: 'Sign in',
+          confidence: 0.2,
+        },
+      ];
+    }
 
     // Get user's recent expenses (last 30 days)
     const thirtyDaysAgo = new Date();
@@ -42,7 +27,7 @@ export async function getAIInsights(): Promise<AIInsight[]> {
 
     const expenses = await db.record.findMany({
       where: {
-        userId: user.clerkUserid,
+        userId,
         createdAt: {
           gte: thirtyDaysAgo,
         },
