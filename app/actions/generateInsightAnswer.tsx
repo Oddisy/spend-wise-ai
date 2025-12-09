@@ -1,5 +1,4 @@
 'use server';
-
 import { checkUser } from '@/lib/checkuser';
 import { db } from '@/lib/db';
 import { generateAIAnswer, ExpenseRecord } from '@/lib/ai';
