@@ -55,19 +55,11 @@ async function addExpenseRecord(formData: FormData): Promise<RecordResult> {
 
   try {
         const user = await checkUser();
-    const userId = user?.clerkUserid;
 
     if (!user) {
-      return [
-        {
-          id: 'auth-1',
-          type: 'warning',
-          title: 'Sign in required',
-          message: 'Please sign in to view your insights.',
-          action: 'Sign in',
-          confidence: 0.2,
-        },
-      ];
+      return {
+        error: 'Sign in required. Please sign in to view your insights.',
+      };
     }
     // Create a new record (allow multiple expenses per day)
     const createdRecord = await db.record.create({
