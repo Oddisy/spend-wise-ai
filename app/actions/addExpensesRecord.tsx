@@ -51,12 +51,24 @@ async function addExpenseRecord(formData: FormData): Promise<RecordResult> {
     console.error('Invalid date format:', error); // Log the error
     return { error: 'Invalid date format' };
   }
-  const user = await checkUser();
-  if (!user) {
-    throw new Error("User not authenticated");
-  }
+
 
   try {
+        const user = await checkUser();
+    const userId = user?.clerkUserid;
+
+    if (!user) {
+      return [
+        {
+          id: 'auth-1',
+          type: 'warning',
+          title: 'Sign in required',
+          message: 'Please sign in to view your insights.',
+          action: 'Sign in',
+          confidence: 0.2,
+        },
+      ];
+    }
     // Create a new record (allow multiple expenses per day)
     const createdRecord = await db.record.create({
       data: {

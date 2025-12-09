@@ -6,10 +6,11 @@ import { generateAIAnswer, ExpenseRecord } from '@/lib/ai';
 export async function generateInsightAnswer(question: string): Promise<string> {
   try {
     const user = await checkUser();
-    if (!user) {
-      throw new Error('User not authenticated');
-    }
+    const userId = user?.clerkUserid;
 
+    if (!user) {
+      return 'Please sign in to view your insights.';
+    }
     // Get user's recent expenses (last 30 days)
     const thirtyDaysAgo = new Date();
     thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
