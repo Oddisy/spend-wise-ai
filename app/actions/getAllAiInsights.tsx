@@ -4,11 +4,37 @@ import { db } from '@/lib/db';
 import { generateExpenseInsights, AIInsight, ExpenseRecord } from '@/lib/ai';
 
 export async function getAIInsights(): Promise<AIInsight[]> {
-  try {
-    const user = await checkUser();
-    if (!user) {
-      throw new Error('User not authenticated');
-    }
+ try {
+  const user = await checkUser();
+
+  if (!user) {
+    return [
+      {
+        id: 'auth-1',
+        type: 'warning',
+        title: 'Sign in required',
+        message: 'Please sign in to view your insights.',
+        action: 'Sign in',
+        confidence: 0.2,
+      },
+    ];
+  }
+
+} catch (error) {
+  console.error('Error checking user authentication:', error);
+
+  return [
+    {
+      id: 'auth-error',
+      type: 'warning',
+      title: 'Authentication issue',
+      message: 'We could not verify your session. Please try again.',
+      action: 'Retry',
+      confidence: 0.3,
+    },
+  ];
+}
+
 
     // Get user's recent expenses (last 30 days)
     const thirtyDaysAgo = new Date();
