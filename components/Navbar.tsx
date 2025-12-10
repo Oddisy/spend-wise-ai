@@ -2,7 +2,6 @@
 
 import { SignInButton, SignedIn, SignedOut, UserButton } from '@clerk/nextjs';
 import Link from 'next/link';
-// import ThemeToggle from '@/components/ThemeToggle';
 import { useState } from 'react';
 
 export default function Navbar() {
@@ -74,9 +73,9 @@ export default function Navbar() {
         {/* Mobile Menu */}
         {isOpen && (
           <div className="md:hidden mt-4 bg-white/90 dark:bg-slate-800/90 rounded-xl shadow border p-3 space-y-2">
-            {['Home', 'About', 'Contact'].map((item) => (
-              <Link key={item} href="/" className="block px-4 py-2 rounded-lg text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-cyan-900/20">
-                {item}
+            {[{name:'Home', href:"/"}, {name:'About', href:"/about"}, {name:'Contact', href:"/contact"}].map((item) => (
+              <Link key={item.name} href="/" className="block px-4 py-2 rounded-lg text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-cyan-900/20">
+                {item.name}
               </Link>
             ))}
 
