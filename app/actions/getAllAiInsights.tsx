@@ -1,14 +1,13 @@
 'use server';
-import { checkUser } from '@/lib/checkuser';
 import { db } from '@/lib/db';
 import { generateExpenseInsights, AIInsight, ExpenseRecord } from '@/lib/ai';
+import { auth } from '@clerk/nextjs/server';
 
 export async function getAIInsights(): Promise<AIInsight[]> {
   try {
-    const user = await checkUser();
-    const userId = user?.clerkUserid;
+    const {userId}  = await auth();
 
-    if (!user) {
+    if (!userId) {
       return [
         {
           id: 'auth-1',
@@ -44,7 +43,7 @@ export async function getAIInsights(): Promise<AIInsight[]> {
         {
           id: 'welcome-1',
           type: 'info',
-          title: 'Welcome to ExpenseTracker AI!',
+          title: 'Welcome to Spendwise AI!',
           message:
             'Start adding your expenses to get personalized AI insights about your spending patterns.',
           action: 'Add your first expense',

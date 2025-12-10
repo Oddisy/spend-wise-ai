@@ -1,14 +1,13 @@
 'use server';
-import { checkUser } from '@/lib/checkuser';
+import {auth} from "@clerk/nextjs/server";
 import { db } from '@/lib/db';
 import { generateAIAnswer, ExpenseRecord } from '@/lib/ai';
 
 export async function generateInsightAnswer(question: string): Promise<string> {
   try {
-    const user = await checkUser();
-    const userId = user?.clerkUserid;
-
-    if (!user) {
+    const authResult = await auth();
+    const userId = authResult?.userId;
+    if (!userId) {
       return 'Please sign in to view your insights.';
     }
     // Get user's recent expenses (last 30 days)
@@ -17,7 +16,7 @@ export async function generateInsightAnswer(question: string): Promise<string> {
 
     const expenses = await db.record.findMany({
       where: {
-        userId: user.clerkUserid,
+        userId,
         createdAt: {
           gte: thirtyDaysAgo,
         },

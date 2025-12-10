@@ -1,14 +1,13 @@
 'use server';
 import { db } from '@/lib/db';
 import { Record } from '@/types/Record';
-import {checkUser} from "../../lib/checkuser";
+import { auth } from '@clerk/nextjs/server';
 
 async function getRecords(): Promise<{
   records?: Record[];
   error?: string;
 }> {
-const user =  await checkUser();
-const userId = user?.clerkUserid;
+const {userId} =  await auth();
   if (!userId) {
     return { error: 'User not found' };
   }

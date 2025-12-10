@@ -1,6 +1,6 @@
 'use server';
-import { checkUser } from '@/lib/checkuser';
 import { db } from '@/lib/db';
+import { auth } from '@clerk/nextjs/server';
 
 type ExpenseStatsResponse = {
   highestExpense: number;
@@ -9,9 +9,8 @@ type ExpenseStatsResponse = {
 };
 
 async function getHighestLowestExpense(): Promise<ExpenseStatsResponse> {
-  const user = await checkUser();
-const userId = user?.clerkUserid;
-  if (!user) {
+  const {userId} = await auth();
+  if (!userId) {
     return {
       highestExpense: 0,
       lowestExpense: 0,
@@ -22,7 +21,7 @@ const userId = user?.clerkUserid;
   try {
     // Fetch all records for the authenticated user
     const records = await db.record.findMany({
-      where: { userId},
+      where:  {userId},
       select: { amount: true },
     });
     console.log('Fetched records for expense calculation:', records);
