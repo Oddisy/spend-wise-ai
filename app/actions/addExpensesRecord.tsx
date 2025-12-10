@@ -1,8 +1,7 @@
 'use server';
 import { db } from '@/lib/db';
 import { revalidatePath } from 'next/cache';
-import { checkUser } from '@/lib/checkuser';
-
+import { auth } from '@clerk/nextjs/server';
 interface RecordData {
   text: string;
   amount: number;
@@ -33,7 +32,7 @@ async function addExpenseRecord(formData: FormData): Promise<RecordResult> {
   ) {
     return { error: 'Text, amount, category, or date is missing' };
   }
-
+const { userId } = await auth();
   const text: string = textValue.toString(); // Ensure text is a string
   const amount: number = parseFloat(amountValue.toString()); // Parse amount as number
   const category: string = categoryValue.toString(); // Ensure category is a string
@@ -54,9 +53,8 @@ async function addExpenseRecord(formData: FormData): Promise<RecordResult> {
 
 
   try {
-        const user = await checkUser();
 
-    if (!user) {
+    if (!userId) {
       return {
         error: 'Sign in required. Please sign in to view your insights.',
       };
@@ -68,7 +66,7 @@ async function addExpenseRecord(formData: FormData): Promise<RecordResult> {
         amount,
         category,
         date, // Save the date to the database
-       userId: user.clerkUserid,
+       userId,
       },
     });
 
