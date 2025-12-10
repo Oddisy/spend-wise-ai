@@ -18,7 +18,7 @@ const RecordChart = async () => {
       </div>
       <div>
         <h3 className="text-lg font-bold text-slate-900 dark:text-slate-100">
-          Expense Chart
+          Expenses Chart
         </h3>
         <p className="text-xs text-slate-500 dark:text-slate-400">
           Visual representation of your spending
