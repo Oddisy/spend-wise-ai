@@ -29,10 +29,10 @@ const Footer = () => {
             Links
           </h4>
           <ul className="space-y-2">
-            {['Overview'].map((link) => (
-              <li key={link}>
+            {[{name:'Home', href: '/home'}, {name: 'about', href:'about'}, {name:'contact', href:'contact'}].map((link) => (
+              <li key={link.name}>
                 <Link href="/" className="text-slate-600 dark:text-slate-400 hover:text-cyan-500 transition">
-                  {link}
+                  {link.name}
                 </Link>
               </li>
             ))}
