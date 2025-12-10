@@ -232,7 +232,7 @@ export default function AllAiInsights() {
                     )}`}
                   >
                     <div className="flex justify-between gap-4">
-                      <div>
+                      <div className='w-4/5 md:w-[90%]'>
                         <h4 className="text-sm font-semibold text-slate-900 dark:text-slate-100">
                           {emoji} {insight.title}
                         </h4>
@@ -241,8 +241,8 @@ export default function AllAiInsights() {
                           <span className="inline-block w-1 ml-1 bg-cyan-500 animate-pulse rounded-sm" />
                         </p>
                       </div>
-                      <span className="text-xs text-cyan-600">
-                        {isOpen ? 'Hide' : 'View'}
+                      <span className="text-xs text-cyan-600 w-1/5 md:w-[10%] text-right">
+                        {isOpen ? 'Hide' : 'Ask AI'}
                       </span>
                     </div>
 
