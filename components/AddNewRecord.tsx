@@ -5,7 +5,7 @@ import addExpenseRecord from '@/app/actions/addExpensesRecord';
 const AddNewRecord = () => {
   const formRef = useRef<HTMLFormElement>(null);
 
-  const [amount, setAmount] = useState(0);
+  const [amount, setAmount] = useState<string>("");
   const [alertMessage, setAlertMessage] = useState<string | null>(null);
   const [alertType, setAlertType] = useState<'success' | 'error' | null>(null);
   const [isLoading, setIsLoading] = useState(false);
@@ -28,7 +28,7 @@ const AddNewRecord = () => {
       setAlertMessage('you have added new expense successfully!');
       setAlertType('success');
       formRef.current?.reset();
-      setAmount(0);
+      setAmount("");
       setCategory('');
       setDescription('');
     }
@@ -218,7 +218,7 @@ if (dateInput?.value) {
                 min="0"
                 step="0.01"
                 value={amount}
-                onChange={(e) => setAmount(Number(e.target.value) || 0)}
+                 onChange={(e) => setAmount(e.target.value)}
                 placeholder="0.00"
                 className="w-full pl-6 pr-3 py-2.5 bg-white/80 dark:bg-slate-800/70 border-2 border-slate-200/80 dark:border-slate-600/80 rounded-xl focus:ring-2 focus:ring-cyan-500/30 focus:border-cyan-400 text-slate-900 dark:text-white font-semibold shadow-sm transition"
                 required

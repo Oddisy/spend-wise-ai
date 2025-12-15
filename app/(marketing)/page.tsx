@@ -1,6 +1,6 @@
 import { checkUser } from "@/lib/checkuser";
 import GuestPage from "./guest/page";
-import Dashboard from "./dashboard/page";
+import Dashboard from "../(dashboard)/dashboard/page";
 
 export default async function  HomePage(){
   const user = await checkUser()

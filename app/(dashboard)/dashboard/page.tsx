@@ -1,7 +1,7 @@
 import AddNewRecord from '@/components/AddNewRecord';
 import AllAiInsights from '@/components/AllAiInsights';
 import ExpenseStats from '@/components/ExpenseStats';
-import Guest from '@/app/guest/page';
+import Guest from '@/app/(marketing)/guest/page';
 import RecordChart from '@/components/RecordChart';
 import RecordHistory from '@/components/RecordHistory';
 import { currentUser } from '@clerk/nextjs/server';
