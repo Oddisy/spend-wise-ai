@@ -28,7 +28,7 @@ const AddNewRecord = () => {
       setAlertMessage('you have added new expense successfully!');
       setAlertType('success');
       formRef.current?.reset();
-      setAmount(0);
+      setAmount("");
       setCategory('');
       setDescription('');
     }
