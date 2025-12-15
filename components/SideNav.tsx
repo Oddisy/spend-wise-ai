@@ -17,7 +17,7 @@ import { UserButton } from "@clerk/nextjs";
 
 const navItems = [
   { name: "Dashboard", href: "/dashboard", icon: LayoutDashboard },
-  { name: "Add Record", href: "/add-record", icon: PlusCircle },
+  { name: "Add New Expense", href: "/add-record", icon: PlusCircle },
   { name: "Analytics", href: "/analytics", icon: BarChart3 },
   { name: "AI Insights", href: "/ai-insights", icon: Sparkles },
   { name: "History", href: "/history", icon: History },
@@ -52,7 +52,7 @@ export default function SideNav() {
 
       {/* Sidebar */}
       <aside
-        className={`
+        className={`flex flex-col gap-6
           fixed left-0 top-0 z-50 h-screen w-64
           bg-white/90 dark:bg-slate-900/90 backdrop-blur-xl
           border-r border-slate-200/60 dark:border-slate-700/60
@@ -64,9 +64,9 @@ export default function SideNav() {
         {/* Header */}
         <div className="px-6 py-5 flex items-center justify-between border-b border-slate-200/60 dark:border-slate-700/60">
           <div>
-            <h1 className="text-xl font-extrabold bg-gradient-to-r from-slate-800 to-cyan-500 bg-clip-text text-transparent">
-              SpendWise AI
-            </h1>
+
+         <h1 className="font-bold text-lg bg-linear-to-r from-cyan-500  via-slate-400 to-slate-100 bg-clip-text text-transparent" >   SpendWise AI
+  </h1>
             <p className="text-xs text-slate-500 dark:text-slate-400">
               Smart Expense Manager
             </p>
