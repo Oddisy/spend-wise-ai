@@ -40,7 +40,7 @@ export default async function DashboardPage() {
     <main className="bg-gray-100 dark:bg-gray-900 text-gray-800 dark:text-gray-200 font-sans min-h-screen transition-colors duration-300">
       <div className="max-w-7xl mx-auto px-3 sm:px-4 lg:px-8 py-4 sm:py-6 lg:py-8">
         {/* Welcome Section */}
-        <div className="flex relative bg-white/95 dark:bg-slate-900/90 border border-slate-200/50 dark:border-slate-700/50 rounded-3xl backdrop-blur-xl shadow-xl overflow-hidden mb-6">
+        <div className="flex max-sm:flex-col relative bg-white/95 dark:bg-slate-900/90 border border-slate-200/50 dark:border-slate-700/50 rounded-3xl backdrop-blur-xl shadow-xl overflow-hidden mb-6">
           <div className="h-1 bg-linear-to-r from-slate-800 via-slate-600 to-cyan-500" />
           <div className="p-6 sm:p-8 flex max-sm:flex-col-reverse flex-row-reverse gap-6">
             <div className="sm:w-full lg:col-span-2 space-y-4">
