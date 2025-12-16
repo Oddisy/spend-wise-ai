@@ -180,7 +180,7 @@ if (dateInput?.value) {
               <span className="w-1.5 h-1.5 bg-cyan-500 rounded-full" />
               Category
             </label>
-            <span className='text-[12px] font-semibold text-yellow-700'>use the button above for AI suggestion</span>
+            <span className='text-[10px] font-semibold text-yellow-700'>use the button above for AI suggestion</span>
             </div>
 
             <select
