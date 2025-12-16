@@ -53,9 +53,11 @@ export default async function DashboardPage() {
               <p className="text-slate-600 dark:text-slate-400 max-w-xl">
                 Manage your expenses, track spending patterns, and stay financially disciplined with SpendWise AI.
               </p>
+              <Link href="/history">
               <button className="mt-3 inline-flex items-center gap-3 bg-linear-to-r from-slate-800 to-cyan-500 text-white px-5 py-3 rounded-xl shadow hover:opacity-90 transition">
                 view history →
               </button>
+              </Link>
             </div>
           </div>
                <ExpenseStats />
@@ -88,7 +90,7 @@ export default async function DashboardPage() {
 
         <div className="mt-6 sm:mt-8 space-y-4 sm:space-y-6">
           <AllAiInsights />
-          <RecordHistory />
+          {/* <RecordHistory /> */}
         </div>
       </div>
     </main>
