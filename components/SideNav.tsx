@@ -53,7 +53,7 @@ export default function SideNav() {
       {/* Sidebar */}
       <aside
         className={`flex flex-col gap-6
-          fixed left-0 top-0 z-50 h-screen w-64
+          fixed left-0 top-0 z-50 h-screen w-56
           bg-white/90 dark:bg-slate-900/90 backdrop-blur-xl
           border-r border-slate-200/60 dark:border-slate-700/60
           transform transition-transform duration-300
