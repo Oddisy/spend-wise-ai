@@ -19,19 +19,19 @@ export default async function DashboardPage() {
     {
       title: 'Add New Expense',
       description: 'Quickly add a new expense to track your spending.',
-      href: '/dashboard/add-record',
+      href: '/add-record',
       icon: <PlusCircle className="w-8 h-8 text-cyan-500" />,
     },
     {
       title: 'View Expense Chart',
       description: 'Analyze your spending patterns over time.',
-      href: '/dashboard/chart',
+      href: '/expense-chart',
       icon: <BarChart3 className="w-8 h-8 text-cyan-500" />,
     },
     {
       title: 'Expense History',
       description: 'See all your past expenses and history logs.',
-      href: '/dashboard/history',
+      href: '/history',
       icon: <HistoryIcon className="w-8 h-8 text-cyan-500" />,
     },
   ];
