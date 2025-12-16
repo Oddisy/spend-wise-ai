@@ -40,7 +40,7 @@ const safeLowestExpense = lowestExpense ?? 0;
         {/* Metrics Cards */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           {/* Average Spending */}
-          <div className="bg-white dark:bg-slate-800 rounded-xl p-6 shadow hover:shadow-lg transition-shadow flex flex-col justify-between">
+          <div className="bg-white dark:bg-slate-800 rounded-xl p-2 py-6 shadow hover:shadow-lg transition-shadow flex flex-col justify-between">
             <div className="flex items-center gap-4 mb-4">
               <div className="w-10 h-10 bg-cyan-100 dark:bg-cyan-700 rounded-lg flex items-center justify-center text-cyan-600 dark:text-cyan-300 text-xl">
                 💸
@@ -63,7 +63,7 @@ const safeLowestExpense = lowestExpense ?? 0;
           </div>
 
           {/* Highest Expense */}
-          <div className="bg-white dark:bg-slate-800 rounded-xl p-6 shadow hover:shadow-lg transition-shadow flex flex-col justify-between border-l-4 border-red-500">
+          <div className="bg-white dark:bg-slate-800 rounded-xl p-2 py-6 shadow hover:shadow-lg transition-shadow flex flex-col justify-between border-l-4 border-red-500">
             <div className="flex items-center gap-4 mb-4">
               <div className="w-10 h-10 bg-red-100 dark:bg-red-700 rounded-lg flex items-center justify-center text-red-600 dark:text-red-300 text-xl">
                 ↑
@@ -86,7 +86,7 @@ const safeLowestExpense = lowestExpense ?? 0;
           </div>
 
           {/* Lowest Expense */}
-          <div className="bg-white dark:bg-slate-800 rounded-xl p-6 shadow hover:shadow-lg transition-shadow flex flex-col justify-between border-l-4 border-cyan-500">
+          <div className="bg-white dark:bg-slate-800 rounded-xl p-2 py-6 shadow hover:shadow-lg transition-shadow flex flex-col justify-between border-l-4 border-cyan-500">
             <div className="flex items-center gap-4 mb-4">
               <div className="w-10 h-10 bg-cyan-100 dark:bg-cyan-700 rounded-lg flex items-center justify-center text-cyan-600 dark:text-cyan-300 text-xl">
                 ↓

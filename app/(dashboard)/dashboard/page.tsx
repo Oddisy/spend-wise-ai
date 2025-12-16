@@ -42,7 +42,7 @@ export default async function DashboardPage() {
         {/* Welcome Section */}
         <div className="flex max-sm:flex-col relative bg-white/95 dark:bg-slate-900/90 border border-slate-200/50 dark:border-slate-700/50 rounded-3xl backdrop-blur-xl shadow-xl overflow-hidden mb-6">
           <div className="h-1 bg-linear-to-r from-slate-800 via-slate-600 to-cyan-500" />
-          <div className="p-6 sm:p-8 flex max-sm:flex-col-reverse flex-row-reverse gap-6">
+          <div className="p-6 sm:p-4 flex max-sm:flex-col-reverse flex-row-reverse gap-6">
             <div className="sm:w-full lg:col-span-2 space-y-4">
               <span className="inline-flex items-center gap-2 px-3 py-1 text-xs font-semibold uppercase tracking-wide text-cyan-500 bg-cyan-100 dark:bg-cyan-900/30 rounded-full">
                 ● Active Account
