@@ -1,9 +1,11 @@
 'use client';
+import {useUser } from '@clerk/nextjs'
 
 import Link from 'next/link';
 import { motion } from 'framer-motion';
 
 const GuestPage = () => {
+  const {isSignedIn} = useUser()
   return (
     <div className="font-sans bg-gradient-to-br from-slate-50 via-white to-cyan-50 dark:from-slate-950 dark:via-slate-900 dark:to-cyan-950 text-slate-900 dark:text-slate-100 transition-all duration-300 min-h-screen">
 
@@ -49,7 +51,7 @@ const GuestPage = () => {
           className="flex flex-col sm:flex-row gap-4 justify-center"
         >
           <Link
-            href="/sign-up"
+            href={isSignedIn ? "/dashboard" : "/sign-up"}
             className="group relative overflow-hidden bg-gradient-to-r from-slate-800 via-slate-600 to-cyan-500 hover:from-slate-900 hover:via-slate-700 hover:to-cyan-600 text-white px-8 py-4 rounded-2xl font-semibold shadow-xl hover:shadow-2xl transition-all duration-200 transform hover:-translate-y-1"
           >
             Get Started Free

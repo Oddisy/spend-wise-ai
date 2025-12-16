@@ -1,4 +1,5 @@
 import { currentUser } from "@clerk/nextjs/server";
+import { SignOutButton } from '@clerk/nextjs'
 import Guest from "@/app/(marketing)/guest/page";
 
 export default async function SettingsPage() {
@@ -137,10 +138,11 @@ export default async function SettingsPage() {
             <button className="w-full sm:w-auto px-5 py-3 rounded-xl bg-slate-800 text-white hover:opacity-90 transition">
               Manage Account
             </button>
-
+  <SignOutButton>
             <button className="w-full sm:w-auto px-5 py-3 rounded-xl bg-red-500 text-white hover:opacity-90 transition">
               Sign Out
             </button>
+            </SignOutButton>
           </div>
         </section>
 

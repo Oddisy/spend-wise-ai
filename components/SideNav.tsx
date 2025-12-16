@@ -119,7 +119,9 @@ export default function SideNav() {
 
           <div className="flex items-center justify-between px-4">
             <UserButton afterSignOutUrl="/" />
+            <Link href="/settings">
             <LogOut className="w-4 h-4 text-slate-400" />
+            </Link>
           </div>
         </div>
       </aside>
