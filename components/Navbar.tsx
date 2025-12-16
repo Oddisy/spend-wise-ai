@@ -1,5 +1,4 @@
 'use client';
-
 import { SignInButton, SignedIn, SignedOut, UserButton } from '@clerk/nextjs';
 import Link from 'next/link';
 import { useState } from 'react';
@@ -54,8 +53,13 @@ export default function Navbar() {
             </SignedOut>
 
             <SignedIn>
-              <div className="p-1 rounded-xl bg-slate-100 dark:bg-slate-800">
+              <div className="p-1 rounded-xl bg-slate-100 dark:bg-slate-800 flex gap-1">
                 <UserButton />
+                <Link href="/dashboard">
+                <div className="text-white">
+                Dashboard
+                </div>
+                </Link>
               </div>
             </SignedIn>
 
