@@ -5,7 +5,7 @@ import AllAiInsights from '@/components/AllAiInsights';
 import ExpenseStats from '@/components/ExpenseStats';
 import Guest from '@/app/(marketing)/guest/page';
 import RecordChart from '@/components/RecordChart';
-import RecordHistory from '@/components/RecordHistory';
+// import RecordHistory from '@/components/RecordHistory';
 import { currentUser } from '@clerk/nextjs/server';
 import { PlusCircle, BarChart3, History as HistoryIcon } from 'lucide-react';
 
