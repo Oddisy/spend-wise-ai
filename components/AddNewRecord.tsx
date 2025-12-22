@@ -123,7 +123,7 @@ if (dateInput?.value) {
                 onChange={(e) => {
                   setDescription(e.target.value);
                 }}
-                placeholder="e.g, Uber ride to airport"
+                placeholder="e.g, Uber to airport"
                 className="w-full pl-3 pr-12 py-2.5 bg-white/80 dark:bg-slate-800/70 border-2 border-slate-200/80 dark:border-slate-600/80 rounded-xl focus:ring-2 focus:ring-cyan-500/30 focus:border-cyan-400 text-slate-900 dark:text-white placeholder-slate-400 shadow-sm hover:shadow-md transition"
                 required
               />
