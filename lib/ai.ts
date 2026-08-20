@@ -25,12 +25,42 @@ const openai = new OpenAI({
   },
 });
 
+const MODEL_CANDIDATES = [
+  process.env.OPENROUTER_MODEL,
+  'openrouter/auto',
+  'meta-llama/llama-3.1-8b-instruct',
+  'mistralai/mistral-small-3.2-24b-instruct:free',
+].filter(Boolean) as string[];
+
+async function createChatCompletionWithFallback(params: {
+  messages: { role: 'system' | 'user' | 'assistant'; content: string }[];
+  temperature: number;
+  max_tokens: number;
+}) {
+  let lastError: unknown;
+
+  for (const model of MODEL_CANDIDATES) {
+    try {
+      return await openai.chat.completions.create({
+        model,
+        messages: params.messages,
+        temperature: params.temperature,
+        max_tokens: params.max_tokens,
+      });
+    } catch (error) {
+      lastError = error;
+      console.warn(`AI model failed: ${model}`, error);
+    }
+  }
+
+  throw lastError ?? new Error('No AI models available');
+}
+
 
 
 export async function categorizeExpense(description: string): Promise<string> {
   try {
-    const completion = await openai.chat.completions.create({
-     model: "mistralai/mistral-7b-instruct",
+    const completion = await createChatCompletionWithFallback({
       messages: [
         {
           role: 'system',
@@ -69,7 +99,7 @@ return finalCategory;
 
   } catch (error) {
     console.error('❌ Error categorizing expense:', error);
-    return 'An error occurred!';
+    return 'Other';
   }
 }
 
@@ -115,8 +145,7 @@ export async function generateExpenseInsights(
 
     Return only valid JSON array, no additional text.`;
 
-    const completion = await openai.chat.completions.create({
-      model: "mistralai/mistral-7b-instruct",
+    const completion = await createChatCompletionWithFallback({
       messages: [
         {
           role: 'system',
@@ -209,8 +238,7 @@ export async function generateAIAnswer(
 
     Return only the answer text, no additional formatting.`;
 
-    const completion = await openai.chat.completions.create({
-      model: "mistralai/mistral-7b-instruct",
+    const completion = await createChatCompletionWithFallback({
       messages: [
         {
           role: 'system',
